@@ -33,8 +33,6 @@ case $cmd_type in
 		;;
             rhel)
                 ;&
-            fedora)
-                ;&
             centos)
                 case $linux_ver in
                     7)
@@ -59,8 +57,6 @@ case $cmd_type in
                 sudo apt-get -y remove globalprotect
                 ;;
             rhel)
-                ;&
-            fedora)
                 ;&
             centos)
                 case $linux_ver in
@@ -87,8 +83,6 @@ case $cmd_type in
                 ;;
             rhel)
                 ;&
-            fedora)
-                ;&
             centos)
 		# Install
                 case $linux_ver in
@@ -111,9 +105,6 @@ case $cmd_type in
         echo "Usage: $ ./gp_uninstall [--cli-only | --arm | --help]"
         echo "  --cli-only: CLI Only"
         echo "  --arm:      ARM"
-        echo "  default:    UI"
-        echo " "
-        echo "Note: Install script will need superuser access"
-
+        echo "  no options: UI"
         ;;	
 esac

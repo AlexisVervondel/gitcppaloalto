@@ -40,14 +40,12 @@ case $cmd_type in
                     16)
                         ;&
                     18)
-                        sudo -E apt-get install -y ./GlobalProtect_deb-*.deb;;
+                        sudo apt-get install -y ./GlobalProtect_deb*.deb;;
                      *)
-                        sudo -E apt-get install -y ./GlobalProtect_focal_deb-*.deb;;
+                        sudo apt-get install -y ./GlobalProtect_focal_deb*.deb;;
 	        esac
                 ;;
             rhel)
-                ;&
-            fedora)
                 ;&
             centos)
                 # Check if old GP package installed
@@ -59,9 +57,9 @@ case $cmd_type in
                 
                 case $linux_ver in
                     7)
-                        sudo -E yum -y install ./GlobalProtect_rpm-*;;
+                        sudo yum -y install ./GlobalProtect_rpm-*;;
 		    *)
-                        sudo -E yum -y install ./GlobalProtect_focal_rpm-*;;
+                        sudo yum -y install ./GlobalProtect_focal_rpm-*;;
                 esac
 	        ;;
             *)
@@ -81,14 +79,12 @@ case $cmd_type in
                     16)
                         ;&
                     18)
-                        sudo -E apt-get install -y ./GlobalProtect_deb_arm*.deb;;
+                        sudo apt-get install -y ./GlobalProtect_deb_arm*.deb;;
 		    *)
-                        sudo -E apt-get install -y ./GlobalProtect_focal_deb_arm*.deb;;
+                        sudo apt-get install -y ./GlobalProtect_focal_deb_arm*.deb;;
 	        esac
                 ;;
             rhel)
-                ;&
-            fedora)
                 ;&
             centos)
                 # Check if old GP package installed
@@ -100,9 +96,9 @@ case $cmd_type in
                 
                 case $linux_ver in
                     7)
-                        sudo -E yum -y install ./GlobalProtect_rpm_arm*;;
+                        sudo yum -y install ./GlobalProtect_rpm_arm*;;
 		    *)
-                        sudo -E yum -y install ./GlobalProtect_focal_rpm_arm*;;
+                        sudo yum -y install ./GlobalProtect_focal_rpm_arm*;;
 	            esac
 	            ;;
             *)
@@ -122,23 +118,21 @@ case $cmd_type in
                     16)
                         ;&
                     18)
-                        sudo -E apt-get install -y ./GlobalProtect_UI_deb*.deb;;
+                        sudo apt-get install -y ./GlobalProtect_UI_deb*.deb;;
 		    20)
                         sudo apt-get install -y gnome-tweak-tool gnome-shell-extension-top-icons-plus
                         gnome-extensions enable TopIcons@phocean.net
-                        sudo -E apt-get install -y ./GlobalProtect_UI_focal_deb*.deb
+                        sudo apt-get install -y ./GlobalProtect_UI_focal_deb*.deb
                         ;;
 		    22)
                         sudo apt-get install -y gnome-shell-extension-manager gnome-shell-extension-appindicator
-                        sudo -E apt-get install -y ./GlobalProtect_UI_focal_deb*.deb
+                        sudo apt-get install -y ./GlobalProtect_UI_focal_deb*.deb
 			;;
 		    *)
-                        sudo -E apt-get install -y ./GlobalProtect_UI_focal_deb*.deb;;
+                        sudo apt-get install -y ./GlobalProtect_UI_focal_deb*.deb;;
 	        esac
                 ;;
             rhel)
-                ;&
-            fedora)
                 ;&
             centos)
                 # Check if old GP package installed
@@ -162,31 +156,21 @@ case $cmd_type in
                         echo "Error: Unsupported RHEL version: $linux_ver"
 			exit
                     fi
+                else
+                    echo "Error: Unrecognized OS: $ID"
+                    exit
                 fi
 
+                echo "yum: Installing Qt5 WebKit and wmctrl..."
                 sudo yum -y install qt5-qtwebkit wmctrl
-
-		# Gnome Shell Extensions Install
-                if [ "$ID" = "rhel" ]; then
-                    if [ "$linux_ver" = "8" ]; then
-                        sudo yum -y install gnome-shell-extension-topicons-plus gnome-tweaks
-                        gnome-shell-extension-tool -e TopIcons@phocean.net
-                    elif [ "$linux_ver" = "9" ]; then
-                        sudo yum -y install gnome-shell-extension-top-icons
-                        gnome-extensions enable top-icons@gnome-shell-extensions.gcampax.github.com
-                    fi
-                elif [ "$ID" = "fedora" ]; then
-                    sudo yum -y install gnome-shell-extension-appindicator gnome-tweaks
-                    gnome-extensions enable appindicatorsupport@rgcjonas.gmail.com
-                fi
 
                 # Install
                 case $linux_ver in
                     7)
-                        sudo -E yum -y install ./GlobalProtect_UI_rpm-*
+                        sudo yum -y install ./GlobalProtect_UI_rpm-*
                         ;;
 		    *)
-                        sudo -E yum -y install ./GlobalProtect_UI_focal_rpm-*;;
+                        sudo yum -y install ./GlobalProtect_UI_focal_rpm-*;;
 	        esac
                 ;;
             *)
@@ -199,28 +183,6 @@ case $cmd_type in
         echo "Usage: $ ./gp_install [--cli-only | --arm | --help]"
         echo "  --cli-only: CLI Only"
         echo "  --arm:      ARM"
-        echo "  default:    UI"
-        echo " "
-        echo "Note: Install script will need superuser access"
+        echo "  no options: UI"
         ;;	
 esac
-
-###############
-##### TBD #####
-###############
-#if [[ $XDG_SESSION_TYPE == "wayland" ]]
-#then
-#    read -p "Do you want to switch from Wayland to X11? " -n 1 -r
-#    echo  
-#    if [[ $REPLY =~ ^[Yy]$ ]]
-#        then
-#        # Wayland to X11
-#        if [[ $ID == "ubuntu" ]]
-#	then
-#             sudo sed -i 's/#WaylandEnable=false/WaylandEnable=false\nDefaultSession=gnome-xorg.desktop/' /etc/gdm3/custom.conf
-#	else
-#             sudo sed -i 's/#WaylandEnable=false/WaylandEnable=false\nDefaultSession=gnome-xorg.desktop/' /etc/gdm/custom.conf
-#        fi
-#	echo "Please reboot to use X11 Window Manager."
-#    fi
-#fi
